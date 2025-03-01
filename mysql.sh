@@ -43,6 +43,7 @@ systemctl start mysqld &>>$LOG_FILE_NAME
 VALIDATE $? "Starting MySQL Server"
 
 mysql -h mysql.salearnings.tech -u root -pExpenseApp@1 -e show databases &>>$LOG_FILE_NAME
+ 
  if [ $? -ne 0 ]
  then
      echo "MySQL Root password not setup"&>>$LOG_FILE_NAME
