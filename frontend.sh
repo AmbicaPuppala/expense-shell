@@ -34,29 +34,29 @@ echo "Script started executing at: $TIMESTAMP" &>>$LOG_FILE_NAME
 
 CHECK_ROOT
 
-dnf install nginx -y  &>>$LOG_FILE_NAME
-VALIDATE $? "Installing Nginx Server"
+dnf install nginx -y &>>$LOG_FILE_NAME
+validate $? "Installing Nginx"
 
 systemctl enable nginx &>>$LOG_FILE_NAME
-VALIDATE $? "Enabling Nginx server"
+validate $? "Enabling Nginx"
 
 systemctl start nginx &>>$LOG_FILE_NAME
-VALIDATE $? "Starting Nginx Server"
+validate $? "Starting Nginx"
 
 rm -rf /usr/share/nginx/html/* &>>$LOG_FILE_NAME
-VALIDATE $? "Removing existing version of code"
+validate $? "Removing existing version of code"
 
-curl -o /tmp/frontend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip &>>$LOG_FILE_NAME
-VALIDATE $? "Downloading Latest code"
+curl -o /tmp/frontend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip
+validate $? "Downloading Frontend Code"
 
 cd /usr/share/nginx/html
-VALIDATE $? "Moving to HTML directory"
+validate $? "Changing directory to /usr/share/nginx/html"
 
 unzip /tmp/frontend.zip &>>$LOG_FILE_NAME
-VALIDATE $? "unzipping the frontend code"
+validate $? "Extracting Frontend Code"
 
 cp /home/ec2-user/expense-shell/expense.conf /etc/nginx/default.d/expense.conf
-VALIDATE $? "Copied expense config"
+validate $? "Copying Nginx Configuration"
 
-systemctl restart nginx  &>>$LOG_FILE_NAME
-VALIDATE $? "Restarting nginx"
+systemctl restart nginx &>>$LOG_FILE_NAME
+validate $? "Restarting Nginx"
